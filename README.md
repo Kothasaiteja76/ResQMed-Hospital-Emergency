@@ -164,3 +164,4 @@ Copy `.env.example` → `.env.local` and fill Firebase / Maps keys when you want
 **Arogya Raksha** — *your neighbourhood safety net and your doctor’s waiting room in the same app.*
 
 </div>
+#ok

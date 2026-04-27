@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "ResQMed Hospital Emergency",
+    "slug": "resqmed-hospital-emergency",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0b0f"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.resqmed.hospitalemergency",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We need your location to send emergency SOS alerts and help responders find you.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "We need your location to track your helmet rides and send SOS alerts.",
+        "NSCameraUsageDescription": "Upload medical records by taking photos.",
+        "NSPhotoLibraryUsageDescription": "Upload medical records from your photo library."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0a0b0f"
+      },
+      "package": "com.resqmed.hospitalemergency",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "VIBRATE",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE"
+      ]
+    },
+    "plugins": [
+      "expo-location",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ]
+  }
+}

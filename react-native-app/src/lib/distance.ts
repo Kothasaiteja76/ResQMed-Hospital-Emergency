@@ -12,6 +12,9 @@ export function getDistance(lat1: number, lon1: number, lat2: number, lon2: numb
   return d;
 }
 
+/** Alias for getDistance — used by helper dashboard & overlay */
+export const haversineKm = getDistance;
+
 function deg2rad(deg: number) {
   return deg * (Math.PI / 180);
 }

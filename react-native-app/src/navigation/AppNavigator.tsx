@@ -28,6 +28,11 @@ import { AdminPanel } from '../screens/admin/AdminPanel';
 import { DoctorPortalPage } from '../screens/portals/DoctorPortalPage';
 import { HospitalPortalPage } from '../screens/portals/HospitalPortalPage';
 import { NotFoundPage } from '../screens/NotFoundPage';
+import { CoinsPage } from '../screens/CoinsPage';
+import { HelperDashboardPage } from '../screens/HelperDashboardPage';
+import { SettingsPage } from '../screens/SettingsPage';
+import { CareDoctorsPage } from '../screens/CareDoctorsPage';
+import { CareHospitalsPage } from '../screens/CareHospitalsPage';
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -36,7 +41,7 @@ export type RootStackParamList = {
   MainTabs: undefined;
   SOS: { requestId?: string };
   Care: undefined;
-  CareHospital: { hospitalId: string; dept?: string };
+  CareHospital: { hospitalId: string; dept?: string; deptId?: string };
   CareDepartment: { departmentId: string };
   CareBook: { hospitalId: string; doctorId: string; departmentId: string; slot?: string };
   MedicalId: undefined;
@@ -47,6 +52,12 @@ export type RootStackParamList = {
   DoctorPortal: undefined;
   HospitalPortal: undefined;
   Help: undefined;
+  Coins: undefined;
+  HelperDashboard: undefined;
+  Settings: undefined;
+  CareDoctors: { hospitalId?: string; deptId?: string };
+  CareHospitals: { deptId?: string };
+  AdminPanel: undefined;
   NotFound: undefined;
 };
 
@@ -162,12 +173,18 @@ export const AppNavigator = () => {
         <Stack.Screen name="Care" component={CareSpecialtiesPage} />
         <Stack.Screen name="CareHospital" component={CareHospitalPage} />
         <Stack.Screen name="CareDepartment" component={CareDepartmentPage} />
+        <Stack.Screen name="CareHospitals" component={CareHospitalsPage} />
+        <Stack.Screen name="CareDoctors" component={CareDoctorsPage} />
         <Stack.Screen name="CareBook" component={CareBookPage} />
         <Stack.Screen name="MedicalId" component={MedicalIdPage} />
         <Stack.Screen name="SafetyCircle" component={SafetyCirclePage} />
         <Stack.Screen name="Vault" component={VaultPage} />
         <Stack.Screen name="Appointments" component={AppointmentsPage} />
         <Stack.Screen name="Admin" component={AdminPanel} />
+        <Stack.Screen name="AdminPanel" component={AdminPanel} />
+        <Stack.Screen name="Coins" component={CoinsPage} />
+        <Stack.Screen name="HelperDashboard" component={HelperDashboardPage} />
+        <Stack.Screen name="Settings" component={SettingsPage} />
         <Stack.Screen name="DoctorPortal" component={DoctorPortalPage} />
         <Stack.Screen name="HospitalPortal" component={HospitalPortalPage} />
         <Stack.Screen name="NotFound" component={NotFoundPage} />

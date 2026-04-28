@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Phone, X, CheckCircle2, ChevronDown, ChevronUp, MapPin, Search, Hospital,
+  Phone, X, CheckCircle2, ChevronDown, ChevronUp, MapPin, Search, Hospital, Clock,
   Car, HeartPulse, Bandage, HelpCircle, Mic, Users, ShieldAlert, Sparkles, Navigation,
   Siren, Ambulance,
 } from 'lucide-react';
@@ -31,8 +31,8 @@ import {
   type UserProfile,
 } from '../../data/user';
 
-/** Helmet One reference: 60s auto-send countdown (same for manual SOS + crash). */
-const HELMET_COUNTDOWN_SEC = 60;
+/** Helmet One reference: 10s auto-send countdown (same for manual SOS + crash). */
+const HELMET_COUNTDOWN_SEC = 10;
 
 type HelmetActiveStep = 'alert_sent' | 'live_track' | 'guidance' | 'at_hospital';
 
@@ -82,6 +82,14 @@ export const SosPage = () => {
   const [showHelplines, setShowHelplines] = useState(false);
   const [callPopup, setCallPopup] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [helperAcceptedToast, setHelperAcceptedToast] = useState<{
+    helperName: string;
+    helperSub?: string;
+    etaLine?: string;
+  } | null>(null);
+  // ── Demo helper popup (temporary) ─────────────────────────────────────────
+  const [showFakeHelperPopup, setShowFakeHelperPopup] = useState(false);
+  const [fakeHelperAccepted, setFakeHelperAccepted] = useState(false);
   const [isLocating, setIsLocating] = useState(true);
 
   const isDoneRef = useRef(false);    // blocks all state updates after cancel/resolve
@@ -129,6 +137,66 @@ export const SosPage = () => {
     setToast(msg);
     setTimeout(() => setToast(null), 3000);
   }, []);
+
+  // ── When a helper accepts, proactively surface it (Rapido/Uber-style) ─────
+  const lastPrimaryHelperRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (phase !== 'active') return;
+    const a = primaryResponder;
+    const hid = a?.helperId ?? null;
+    if (!hid || hid === lastPrimaryHelperRef.current) return;
+    lastPrimaryHelperRef.current = hid;
+
+    const hb = a?.helperBrief;
+    const hName = (hb?.name || a?.helperName || 'Responder').trim();
+    const hAge = hb?.age ?? (helperPublic ? computeAgeFromDob(helperPublic.dob) : undefined);
+    const hAddr = hb?.shortAddress ?? shortAddressFromProfile(helperPublic);
+    const etaLine = a?.etaSeconds
+      ? `${formatEta(a.etaSeconds)}${a.distanceMeters != null ? ` · ${formatDistance(a.distanceMeters)}` : ''}`
+      : (a?.distanceMeters != null ? `${formatDistance(a.distanceMeters)} away` : undefined);
+
+    setHelperAcceptedToast({
+      helperName: hName,
+      helperSub: [hAge != null ? `${hAge} yrs` : null, hAddr ?? null].filter(Boolean).join(' · ') || undefined,
+      etaLine,
+    });
+    const t = setTimeout(() => setHelperAcceptedToast(null), 6000);
+    return () => clearTimeout(t);
+  }, [phase, primaryResponder, helperPublic]);
+
+  // ── TEMP: Fake helper accept popup (requested) ────────────────────────────
+  useEffect(() => {
+    if (phase !== 'active') return;
+    if (primaryResponder) return;
+    if (fakeHelperAccepted || showFakeHelperPopup) return;
+    const t = setTimeout(() => setShowFakeHelperPopup(true), 900);
+    return () => clearTimeout(t);
+  }, [phase, primaryResponder, fakeHelperAccepted, showFakeHelperPopup]);
+
+  const fakePrimaryResponder: SosAssignmentDoc | null = useMemo(() => {
+    if (!fakeHelperAccepted) return null;
+    return {
+      id: 'fake-assignment',
+      requestId: sosId ?? 'fake',
+      victimId: uid,
+      helperId: 'fake-helper-akriti',
+      helperName: 'Akriti Jha',
+      helperBrief: {
+        name: 'Akriti Jha',
+        age: 25,
+        shortAddress: 'On scooty',
+        phone: '9999999999',
+      } as ParticipantBrief,
+      status: 'enroute',
+      acceptedAt: null as any,
+      updatedAt: null as any,
+      distanceTrend: 'unknown',
+      etaSeconds: 3 * 60,
+      distanceMeters: 900,
+    } as any;
+  }, [fakeHelperAccepted, sosId, uid]);
+
+  const uiPrimaryResponder = primaryResponder ?? fakePrimaryResponder;
 
   // ── Mount: clear stale location, auto-connect GPS ─────────────────────────
   useEffect(() => {
@@ -378,6 +446,111 @@ export const SosPage = () => {
             className="fixed top-4 left-1/2 -translate-x-1/2 z-50 rounded-full border border-white/10 bg-[#1a1b22] px-5 py-2.5 text-xs font-semibold text-white shadow-xl"
           >
             {toast}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Helper accepted (victim) — auto popup */}
+      <AnimatePresence>
+        {helperAcceptedToast && (
+          <motion.div
+            initial={{ y: -18, opacity: 0, scale: 0.98 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: -18, opacity: 0, scale: 0.98 }}
+            className="fixed top-16 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-sm rounded-3xl border border-emerald-500/25 bg-emerald-500/[0.08] backdrop-blur px-4 py-3 shadow-2xl"
+          >
+            <div className="flex items-start gap-3">
+              <div className="h-11 w-11 rounded-2xl flex items-center justify-center shrink-0"
+                style={{ background: 'linear-gradient(135deg,#10b981,#0891b2)' }}>
+                🚑
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[10px] font-black uppercase tracking-widest text-emerald-300">Responder accepted</div>
+                <div className="text-sm font-black text-white truncate">{helperAcceptedToast.helperName}</div>
+                {helperAcceptedToast.helperSub && (
+                  <div className="text-[11px] text-white/55 truncate">{helperAcceptedToast.helperSub}</div>
+                )}
+                {helperAcceptedToast.etaLine && (
+                  <div className="mt-1 text-[11px] font-black text-emerald-200">{helperAcceptedToast.etaLine} away</div>
+                )}
+              </div>
+              <button
+                onClick={() => setHelperAcceptedToast(null)}
+                className="h-8 w-8 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] flex items-center justify-center shrink-0"
+                aria-label="Dismiss"
+              >
+                <X className="h-4 w-4 text-white/60" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* TEMP: Fake helper accept popup (requested) */}
+      <AnimatePresence>
+        {showFakeHelperPopup && phase === 'active' && !primaryResponder && !fakeHelperAccepted && (
+          <motion.div
+            key="fake-helper-scrim"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[120] bg-black/75 backdrop-blur-sm flex items-end sm:items-center justify-center p-4"
+          >
+            <motion.div
+              key="fake-helper-card"
+              initial={{ y: 20, opacity: 0, scale: 0.98 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 20, opacity: 0, scale: 0.98 }}
+              className="w-full max-w-sm rounded-3xl border border-white/[0.08] bg-[#13141a] p-4 shadow-2xl"
+            >
+              <div className="flex items-start gap-3">
+                <div className="h-12 w-12 rounded-2xl flex items-center justify-center shrink-0"
+                  style={{ background: 'linear-gradient(135deg,#10b981,#0891b2)' }}>
+                  🛵
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] font-black uppercase tracking-widest text-white/35">Nearby responder</div>
+                  <div className="text-base font-black text-white truncate">Akriti Jha</div>
+                  <div className="text-[11px] text-white/55 truncate">25 years · on scooty</div>
+                  <div className="mt-2 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/[0.08] px-3 py-1">
+                    <Clock className="h-3.5 w-3.5 text-emerald-300" />
+                    <span className="text-[11px] font-black text-emerald-200">3 min away</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowFakeHelperPopup(false)}
+                  className="h-9 w-9 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] flex items-center justify-center shrink-0"
+                  aria-label="Close"
+                >
+                  <X className="h-4 w-4 text-white/60" />
+                </button>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <a
+                  href="tel:9999999999"
+                  className="h-11 rounded-2xl border border-sky-500/35 bg-sky-500/10 text-[12px] font-black text-sky-200 hover:bg-sky-500/15 transition active:scale-[0.99] flex items-center justify-center gap-2"
+                >
+                  <Phone className="h-4 w-4" /> Call
+                </a>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowFakeHelperPopup(false);
+                    setFakeHelperAccepted(true);
+                    setHelperAcceptedToast({
+                      helperName: 'Akriti Jha',
+                      helperSub: '25 yrs · On scooty',
+                      etaLine: '3 min · 0.9 km',
+                    });
+                  }}
+                  className="h-11 rounded-2xl text-[12px] font-black text-white transition active:scale-[0.99]"
+                  style={{ background: 'linear-gradient(135deg,#10b981,#059669)' }}
+                >
+                  OK
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -944,8 +1117,8 @@ export const SosPage = () => {
               </motion.div>
               <h1 className="text-2xl font-black text-white">Help is on the way</h1>
               <p className="mt-1 text-sm text-white/45">
-                {primaryResponder?.etaSeconds
-                  ? `Ambulance / responder ETA ${formatEta(primaryResponder.etaSeconds)}`
+                {uiPrimaryResponder?.etaSeconds
+                  ? `Ambulance / responder ETA ${formatEta(uiPrimaryResponder.etaSeconds)}`
                   : 'Live tracking & responders below'}
               </p>
             </div>
@@ -1044,17 +1217,17 @@ export const SosPage = () => {
                 );
                 })()}
 
-                {primaryResponder && (
+                {uiPrimaryResponder && (
                   <div className="rounded-3xl border border-white/[0.06] bg-[#13141a] p-4 flex items-center justify-between gap-4">
                     <div>
                       <div className="text-sm font-black text-white">Responder is on the way</div>
                       <div className="text-[10px] font-black text-white/35 uppercase tracking-widest mt-2">ETA</div>
                       <div className="text-3xl font-black text-white mt-0.5">
-                        {primaryResponder.etaSeconds ? formatEta(primaryResponder.etaSeconds) : '—'}
+                        {uiPrimaryResponder.etaSeconds ? formatEta(uiPrimaryResponder.etaSeconds) : '—'}
                       </div>
-                      {primaryResponder.distanceMeters != null && (
+                      {uiPrimaryResponder.distanceMeters != null && (
                         <div className="text-xs text-white/50 mt-1 font-semibold">
-                          {formatDistance(primaryResponder.distanceMeters)} away
+                          {formatDistance(uiPrimaryResponder.distanceMeters)} away
                         </div>
                       )}
                     </div>
@@ -1138,7 +1311,7 @@ export const SosPage = () => {
                 })()}
 
               {/* Rapido-style reach (no per-helper list); slim bar once a responder is assigned */}
-              {!noLocationMode && !primaryResponder && (
+              {!noLocationMode && !uiPrimaryResponder && (
                 <div className="rounded-3xl border border-white/[0.06] bg-gradient-to-b from-[#151622] to-[#101118] p-4 shadow-[0_0_40px_rgba(59,130,246,0.06)]">
                   <div className="flex items-start gap-3">
                     <div className="h-11 w-11 rounded-2xl bg-blue-500/15 border border-blue-500/25 flex items-center justify-center shrink-0">
@@ -1161,8 +1334,8 @@ export const SosPage = () => {
                 </div>
               )}
 
-              {primaryResponder && (() => {
-                const a = primaryResponder;
+              {uiPrimaryResponder && (() => {
+                const a = uiPrimaryResponder;
                 const hb = a.helperBrief;
                 const reached = a.status === 'reached' || !!a.arrivedAt;
                 const hName = (hb?.name || a.helperName || 'Responder').trim();

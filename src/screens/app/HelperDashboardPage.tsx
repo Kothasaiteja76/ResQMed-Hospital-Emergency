@@ -37,7 +37,7 @@ const LEADERBOARD_DEMO = [
 
 export const HelperDashboardPage = () => {
   const nav = useNavigate();
-  const { user } = useAuth();
+  const { user, ready } = useAuth();
   const [tab, setTab] = useState<Tab>('need-help');
   const [feed, setFeed] = useState<SosRequestDoc[]>([]);
   const [acceptedId, setAcceptedId] = useState<string | null>(null);
@@ -56,8 +56,9 @@ export const HelperDashboardPage = () => {
 
   // Redirect to login if not authenticated
   useEffect(() => {
-    if (!user) nav('/login?redirect=/app/helper');
-  }, [user, nav]);
+    if (!ready) return;
+    if (!user) nav('/login?redirect=/app/helper', { replace: true });
+  }, [ready, user, nav]);
 
   // ── Acquire helper's GPS location for distance-based filtering ────────────
   useEffect(() => {

@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  FolderHeart, Sparkles,
+  Sparkles,
   ChevronRight, Clock, Trophy,
-  Heart, Users, HardHat, BatteryFull, BatteryLow, BatteryWarning, Wifi, WifiOff, ShieldCheck,
-  Bell, Siren, Share2, Stethoscope,
+  Users, HardHat, BatteryFull, BatteryLow, BatteryWarning, Wifi, WifiOff, ShieldCheck,
+  Bell, Siren, Share2,
 } from 'lucide-react';
 import { useAuth } from '../../auth/AuthProvider';
 import { DEPARTMENTS, SHOWCASE_HOSPITAL, getDepartment } from '../../data/hospitals';
@@ -176,21 +176,6 @@ export const DashboardPage = () => {
         </div>
       </div>
 
-      {/* More tools */}
-      <div>
-        <div className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">More</div>
-        <div className="grid grid-cols-4 gap-2">
-          <QuickLink to="/app/medical-id"
-            icon={<Heart className="h-4 w-4 text-red-300" />} label="Medical ID" tint="rgba(239,68,68,0.10)" />
-          <QuickLink to="/app/safety"
-            icon={<ShieldCheck className="h-4 w-4 text-emerald-300" />} label="Safety" tint="rgba(16,185,129,0.10)" />
-          <QuickLink to="/app/vault"
-            icon={<FolderHeart className="h-4 w-4 text-pink-300" />} label="Vault" tint="rgba(236,72,153,0.10)" />
-          <QuickLink to="/app/care"
-            icon={<Stethoscope className="h-4 w-4 text-sky-300" />} label="Hospitals" tint="rgba(14,165,233,0.10)" />
-        </div>
-      </div>
-
       {/* Quick actions — below hospital & more (Helmet One layout) */}
       <div>
         <div className="text-[10px] font-black uppercase tracking-widest text-white/35 mb-2">Quick actions</div>
@@ -286,19 +271,6 @@ export const DashboardPage = () => {
     </div>
   );
 };
-
-const QuickLink = ({
-  to, icon, label, tint,
-}: { to: string; icon: React.ReactNode; label: string; tint?: string }) => (
-  <Link
-    to={to}
-    className="flex flex-col items-center gap-1 rounded-2xl border border-white/[0.05] bg-white/[0.03] py-3 transition active:scale-95 hover:bg-white/[0.06]"
-    style={tint ? { background: tint } : undefined}
-  >
-    {icon}
-    <span className="text-[9px] text-white/70 font-bold">{label}</span>
-  </Link>
-);
 
 const Stat = ({ n, l }: { n: string; l: string }) => (
   <div className="rounded-2xl bg-white/[0.03] border border-white/[0.04] py-2 px-1 text-center">

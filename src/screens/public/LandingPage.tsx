@@ -55,7 +55,7 @@ export const LandingPage = () => {
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         className="sticky top-0 z-30 bg-[#0a0b0f]/70 backdrop-blur-xl border-b border-white/[0.05]"
       >
-        <div className="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
+        <div className="max-w-lg mx-auto px-4 py-2 min-h-14 flex items-center justify-between gap-2">
           <Link to="/" className="flex items-center gap-2 group">
             <motion.div
               whileHover={reduceMotion ? undefined : { scale: 1.06, rotate: -4 }}
@@ -67,20 +67,20 @@ export const LandingPage = () => {
             </motion.div>
             <span className="text-sm font-black tracking-tight group-hover:text-white/90 transition">Arogya Raksha</span>
           </Link>
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1.5 shrink-0">
             <a
               href="#download-app"
               title="Download app — no login required"
-              className="inline-flex h-9 shrink-0 px-2.5 sm:px-3 rounded-full text-[11px] sm:text-xs font-black text-sky-200/90 hover:text-white border border-sky-500/25 bg-sky-500/10 hover:bg-sky-500/15 items-center transition gap-1"
+              className="inline-flex h-8 shrink-0 px-2.5 rounded-full text-[10px] font-black text-sky-200/90 hover:text-white border border-sky-500/25 bg-sky-500/10 hover:bg-sky-500/15 items-center transition gap-1"
             >
               <Download className="h-3.5 w-3.5 shrink-0" />
               <span className="whitespace-nowrap">Get app</span>
             </a>
-            <Link to="/login" className="h-9 px-3 rounded-full text-xs font-black text-white/70 hover:text-white hover:bg-white/[0.06] flex items-center transition">
+            <Link to="/login" className="h-8 px-2.5 rounded-full text-[10px] font-black text-white/70 hover:text-white hover:bg-white/[0.06] flex items-center transition">
               Log in
             </Link>
             <Link to="/signup"
-              className="h-9 px-3.5 rounded-full text-xs font-black text-white flex items-center transition active:scale-95"
+              className="h-8 px-2.5 rounded-full text-[10px] font-black text-white flex items-center transition active:scale-95"
               style={{ background: 'linear-gradient(135deg,#dc2626,#991b1b)', boxShadow: '0 0 16px rgba(220,38,38,0.35)' }}>
               Sign up →
             </Link>
@@ -89,7 +89,7 @@ export const LandingPage = () => {
       </motion.header>
 
       {/* Hero */}
-      <section className="relative px-5 pt-10 pb-14 max-w-5xl mx-auto overflow-hidden">
+      <section className="relative px-4 pt-8 pb-12 max-w-lg mx-auto overflow-hidden">
         {!reduceMotion && (
           <>
             <motion.div
@@ -108,11 +108,11 @@ export const LandingPage = () => {
             />
           </>
         )}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[720px] h-[720px] rounded-full pointer-events-none"
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[520px] h-[520px] rounded-full pointer-events-none"
           style={{ background: 'radial-gradient(ellipse, rgba(220,38,38,0.10) 0%, transparent 55%)' }} />
         <motion.div
           style={reduceMotion ? undefined : { y: heroParallaxY }}
-          className="relative grid md:grid-cols-2 gap-8 md:gap-10 items-center"
+          className="relative grid grid-cols-1 gap-6 items-center"
         >
           <motion.div
             initial={reduceMotion ? undefined : { opacity: 0, y: 18 }}
@@ -128,7 +128,7 @@ export const LandingPage = () => {
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-[10px] font-black tracking-widest text-emerald-300">LIVE IN YOUR CITY</span>
             </motion.div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-[1.05] tracking-tight">
+            <h1 className="text-[2.1rem] sm:text-[2.3rem] font-black leading-[1.06] tracking-tight">
               One app for every <motion.span
                 className="text-red-400 inline-block"
                 initial={reduceMotion ? undefined : { opacity: 0, x: -8 }}
@@ -142,14 +142,14 @@ export const LandingPage = () => {
                 transition={{ delay: 0.22, duration: 0.45 }}
               > hospital visit</motion.span>.
             </h1>
-            <p className="mt-4 text-sm md:text-base text-white/55 max-w-lg leading-relaxed">
+            <p className="mt-4 text-sm text-white/55 max-w-lg leading-relaxed">
               Arogya Raksha is an Uber-for-hospitals that also summons nearby helpers the instant you
               raise an SOS. Book doctors by department, store prescriptions in your Health Vault, and
               earn points every time you rescue a neighbour — all from one clean interface.
             </p>
 
             <motion.div
-              className="mt-6 flex flex-wrap gap-2"
+              className="mt-6 grid grid-cols-1 gap-2"
               initial={reduceMotion ? undefined : { opacity: 0, y: 12 }}
               animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
               transition={{ delay: 0.28, duration: 0.45 }}
@@ -158,7 +158,7 @@ export const LandingPage = () => {
                 whileHover={reduceMotion ? undefined : { scale: 1.03 }}
                 whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                 onClick={() => nav('/app/sos')}
-                className="h-12 px-5 rounded-full flex items-center gap-2 text-sm font-black transition"
+                className="h-12 w-full px-5 rounded-full flex items-center justify-center gap-2 text-sm font-black transition"
                 style={{ background: 'linear-gradient(135deg,#dc2626,#991b1b)', boxShadow: '0 0 24px rgba(220,38,38,0.45)' }}
               >
                 <Siren className="h-4 w-4" /> I need help now
@@ -167,7 +167,7 @@ export const LandingPage = () => {
                 whileHover={reduceMotion ? undefined : { scale: 1.03 }}
                 whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                 onClick={() => nav('/login?redirect=/app/care')}
-                className="h-12 px-5 rounded-full flex items-center gap-2 text-sm font-black transition"
+                className="h-12 w-full px-5 rounded-full flex items-center justify-center gap-2 text-sm font-black transition"
                 style={{ background: 'linear-gradient(135deg,#10b981,#047857)', boxShadow: '0 0 24px rgba(16,185,129,0.35)' }}
               >
                 <Stethoscope className="h-4 w-4" /> Book a doctor
@@ -176,7 +176,7 @@ export const LandingPage = () => {
                 whileHover={reduceMotion ? undefined : { scale: 1.02 }}
                 whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                 onClick={() => nav('/login?redirect=/app/help')}
-                className="h-12 px-5 rounded-full flex items-center gap-2 text-sm font-black bg-white/[0.05] border border-white/10 hover:bg-white/[0.08] transition"
+                className="h-12 w-full px-5 rounded-full flex items-center justify-center gap-2 text-sm font-black bg-white/[0.05] border border-white/10 hover:bg-white/[0.08] transition"
               >
                 <HandHeart className="h-4 w-4" /> Volunteer as helper
               </motion.button>
@@ -184,49 +184,25 @@ export const LandingPage = () => {
                 href="#download-app"
                 whileHover={reduceMotion ? undefined : { scale: 1.02 }}
                 whileTap={reduceMotion ? undefined : { scale: 0.97 }}
-                className="h-12 px-5 rounded-full inline-flex items-center gap-2 text-sm font-black bg-sky-500/15 border border-sky-400/30 text-sky-100 hover:bg-sky-500/25 transition"
+                className="h-12 w-full px-5 rounded-full inline-flex items-center justify-center gap-2 text-sm font-black bg-sky-500/15 border border-sky-400/30 text-sky-100 hover:bg-sky-500/25 transition"
               >
                 <Download className="h-4 w-4" /> Get the app <span className="text-[10px] font-bold text-sky-200/70">(no login)</span>
               </motion.a>
             </motion.div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] text-white/40">
+            <div className="mt-6 grid grid-cols-1 gap-2 text-[11px] text-white/40">
               <span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" /> &lt; 10 s SOS dispatch</span>
               <span className="inline-flex items-center gap-1"><ShieldCheck className="h-3 w-3" /> End-to-end encrypted vault</span>
               <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" /> Live Google Maps tracking</span>
             </div>
           </motion.div>
 
-          {/* Right-side SOS visual */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="relative hidden md:flex items-center justify-center h-80"
-          >
-            <div className="absolute inset-0 rounded-[2.5rem] border border-white/[0.06] bg-[#13141a] overflow-hidden">
-              <div className="absolute inset-0"
-                style={{ background: 'radial-gradient(ellipse at 30% 30%, rgba(220,38,38,0.15) 0%, transparent 50%), radial-gradient(ellipse at 70% 70%, rgba(29,78,216,0.12) 0%, transparent 50%)' }} />
-              <div className="relative h-full flex flex-col items-center justify-center p-8">
-                <div className="relative h-40 w-40 rounded-full flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg,#dc2626,#991b1b)', boxShadow: '0 0 0 12px rgba(220,38,38,0.1), 0 0 60px rgba(220,38,38,0.45)' }}>
-                  <span className="absolute inset-0 rounded-full border-2 border-red-500/40 animate-ping" style={{ animationDuration: '2s' }} />
-                  <Siren className="h-16 w-16" strokeWidth={1.4} />
-                </div>
-                <div className="mt-6 w-full max-w-xs space-y-2">
-                  <MiniRow label="📍 3 helpers nearby" tint="#10b981" />
-                  <MiniRow label="🚑 Ambulance ETA · 4 min" tint="#f59e0b" />
-                  <MiniRow label="📞 Contacts being notified" tint="#3b82f6" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </motion.div>
       </section>
 
       {/* Platform pillars */}
       <motion.section
-        className="px-5 pb-16 max-w-5xl mx-auto"
+        className="px-4 pb-12 max-w-lg mx-auto"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.15 }}
@@ -234,14 +210,14 @@ export const LandingPage = () => {
       >
         <div className="text-center mb-8">
           <div className="text-[10px] font-black tracking-widest text-white/45 uppercase">Two apps. One platform.</div>
-          <h2 className="mt-1 text-2xl sm:text-3xl font-black">Emergency response + Hospital care</h2>
+          <h2 className="mt-1 text-2xl font-black">Emergency response + Hospital care</h2>
           <p className="mt-2 text-sm text-white/45 max-w-xl mx-auto">
             Built for Indian users. Hospital booking and emergency SOS are first-class citizens — not
             hidden behind menus.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-3">
+        <div className="grid gap-3">
           <PillarCard
             tint="#ef4444"
             title="Emergency Response"
@@ -275,7 +251,7 @@ export const LandingPage = () => {
 
       {/* Feature grid */}
       <motion.section
-        className="px-5 pb-16 max-w-5xl mx-auto"
+        className="px-4 pb-12 max-w-lg mx-auto"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.08 }}
@@ -286,7 +262,7 @@ export const LandingPage = () => {
           <h2 className="mt-1 text-2xl font-black">Everything you need, in one place</h2>
         </div>
         <motion.div
-          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2"
+          className="grid grid-cols-1 gap-2"
           variants={gridParent}
           initial="hidden"
           whileInView="visible"
@@ -306,7 +282,7 @@ export const LandingPage = () => {
 
       {/* How it works */}
       <motion.section
-        className="px-5 pb-16 max-w-5xl mx-auto"
+        className="px-4 pb-12 max-w-lg mx-auto"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.12 }}
@@ -316,7 +292,7 @@ export const LandingPage = () => {
           <div className="text-[10px] font-black tracking-widest text-white/45 uppercase">How it works</div>
           <h2 className="mt-1 text-2xl font-black">From tap to care in 3 steps</h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-3">
           <Step n="01" title="Sign up with your mobile"
             desc="One-time phone OTP. Add your emergency contacts and blood group."
           />
@@ -330,41 +306,41 @@ export const LandingPage = () => {
       </motion.section>
 
       {/* Download app */}
-      <section id="download-app" className="px-5 pb-16 max-w-5xl mx-auto scroll-mt-24">
+      <section id="download-app" className="px-4 pb-12 max-w-lg mx-auto scroll-mt-24">
         <motion.div
           initial={reduceMotion ? undefined : { opacity: 0, y: 24 }}
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="relative rounded-[2rem] overflow-hidden border border-white/[0.08] bg-[#13141a] p-6 md:p-8"
+          className="relative rounded-[2rem] overflow-hidden border border-white/[0.08] bg-[#13141a] p-5"
         >
           <div className="absolute inset-0 pointer-events-none opacity-90"
             style={{ background: 'linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(16,185,129,0.1) 45%, rgba(220,38,38,0.08) 100%)' }} />
           <div className="absolute -top-20 right-0 h-56 w-56 rounded-full blur-3xl pointer-events-none bg-emerald-500/20" />
-          <div className="relative flex flex-col md:flex-row md:items-center gap-6">
+          <div className="relative flex flex-col gap-5">
             <div className="flex-1">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 mb-3">
                 <Smartphone className="h-3.5 w-3.5 text-sky-300" />
                 <span className="text-[10px] font-black tracking-widest text-white/70 uppercase">Get the app</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-black leading-tight">Download Arogya Raksha</h2>
+              <h2 className="text-2xl font-black leading-tight">Download Arogya Raksha</h2>
               <p className="mt-2 text-sm text-white/55 max-w-lg leading-relaxed">
                 Install on your phone for faster SOS, offline-friendly shortcuts, and optional home-screen alerts.
                 Store builds ship soon — for now use the web app as a <strong className="text-white/80">Progressive Web App</strong>.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 shrink-0 w-full md:w-auto">
+            <div className="grid grid-cols-1 gap-2 w-full">
               <a
                 href="/manifest.webmanifest"
                 download="arogya-raksha.webmanifest"
-                className="h-12 px-5 rounded-2xl flex items-center justify-center gap-2 text-sm font-black bg-white text-slate-950 hover:bg-white/95 transition active:scale-[0.98]"
+                className="h-12 w-full px-5 rounded-2xl flex items-center justify-center gap-2 text-sm font-black bg-white text-slate-950 hover:bg-white/95 transition active:scale-[0.98]"
               >
                 <Download className="h-4 w-4" /> Web manifest
               </a>
               <button
                 type="button"
                 onClick={() => nav('/signup')}
-                className="h-12 px-5 rounded-2xl flex items-center justify-center gap-2 text-sm font-black border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] transition active:scale-[0.98]"
+                className="h-12 w-full px-5 rounded-2xl flex items-center justify-center gap-2 text-sm font-black border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] transition active:scale-[0.98]"
               >
                 Open in browser <ChevronRight className="h-4 w-4" />
               </button>
@@ -380,19 +356,19 @@ export const LandingPage = () => {
 
       {/* CTA */}
       <motion.section
-        className="px-5 pb-20 max-w-5xl mx-auto"
+        className="px-4 pb-14 max-w-lg mx-auto"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.15 }}
         variants={blockReveal}
       >
-        <div className="relative rounded-3xl overflow-hidden p-6 md:p-10 border border-white/[0.06] bg-[#13141a]">
+        <div className="relative rounded-3xl overflow-hidden p-5 border border-white/[0.06] bg-[#13141a]">
           <div className="absolute inset-0 pointer-events-none"
             style={{ background: 'radial-gradient(ellipse at 20% 30%, rgba(220,38,38,0.18) 0%, transparent 50%), radial-gradient(ellipse at 80% 70%, rgba(16,185,129,0.18) 0%, transparent 55%)' }} />
-          <div className="relative grid md:grid-cols-2 gap-6 items-center">
+          <div className="relative grid grid-cols-1 gap-5 items-center">
             <div>
               <div className="text-[10px] font-black tracking-widest text-white/50 uppercase">Join Arogya Raksha</div>
-              <h3 className="mt-1 text-2xl md:text-3xl font-black leading-tight">
+              <h3 className="mt-1 text-2xl font-black leading-tight">
                 Your neighbourhood's safety net — and your doctor's waiting room — in the same app.
               </h3>
               <p className="mt-2 text-sm text-white/50 max-w-md">
@@ -426,9 +402,9 @@ export const LandingPage = () => {
 
       {/* Footer */}
       <footer className="border-t border-white/[0.06] py-6">
-        <div className="max-w-5xl mx-auto px-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="max-w-lg mx-auto px-4 flex flex-col items-center text-center gap-3">
           <div className="text-[11px] text-white/35">© {new Date().getFullYear()} Arogya Raksha · Built with care</div>
-          <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-[11px] text-white/35">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] text-white/35">
             <a href="/#download-app" className="inline-flex items-center gap-1 hover:text-sky-300 font-semibold text-white/50">
               <Download className="h-3 w-3" /> App
             </a>
@@ -443,13 +419,6 @@ export const LandingPage = () => {
 };
 
 // ── Sub-components ──────────────────────────────────────────────────────────
-const MiniRow = ({ label, tint }: { label: string; tint: string }) => (
-  <div className="flex items-center gap-2 rounded-2xl bg-black/40 border border-white/[0.07] px-3 py-2 text-[11px] font-semibold">
-    <span className="h-1.5 w-1.5 rounded-full" style={{ background: tint }} />
-    <span className="text-white/80">{label}</span>
-  </div>
-);
-
 const PillarCard = ({
   tint, title, subtitle, bullets, cta, onCta, icon,
 }: {

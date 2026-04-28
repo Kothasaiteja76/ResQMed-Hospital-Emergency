@@ -6,6 +6,8 @@
 
 **Uber-for-hospitals meets live SOS** — built for Indian users: instant help, doctor booking, encrypted health records, and volunteer rewards in one dark, mobile-first experience (**Helmet One**–style UI).
 
+[![Live demo](https://img.shields.io/badge/Run-locally-22c55e?style=for-the-badge)](#run-locally)
+
 </div>
 
 ---
@@ -20,18 +22,17 @@
 
 ---
 
-## Hardware Integration
+## Screenshots
 
-<img width="1081" height="627" alt="image" src="https://github.com/user-attachments/assets/4165aad5-6ab1-4f83-83b5-5c6661587cf5" />
+Add your marketing captures to [`docs/screenshots/`](docs/screenshots/) using these names (or update the paths in this file):
 
 ### Landing — hero
 
-<img width="463" height="755" alt="image" src="https://github.com/user-attachments/assets/f31b6b52-cd04-4085-9f98-a2e424df5ce0" />
-
+![Arogya Raksha landing — hero, SOS and care CTAs](docs/screenshots/01-landing-hero.png)
 
 ### Inside the app — “Everything you need, in one place”
 
-<img width="308" height="571" alt="image" src="https://github.com/user-attachments/assets/ca086149-60d5-4fb0-8053-d3ca6b8686e1" />
+![Feature highlights grid — instant SOS, I-Can-Help, departments, vault, points, Firebase, live tracking, community](docs/screenshots/02-features-everything-in-one-place.png)
 
 ---
 
@@ -164,4 +165,3 @@ Copy `.env.example` → `.env.local` and fill Firebase / Maps keys when you want
 **Arogya Raksha** — *your neighbourhood safety net and your doctor’s waiting room in the same app.*
 
 </div>
-#ok

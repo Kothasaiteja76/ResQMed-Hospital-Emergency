@@ -37,7 +37,8 @@ const SNOOZE_UNTIL_KEY = 'arogya_sos_snooze_until';
 const POPUP_RADIUS_KM = 5.0;
 const AUTO_DISMISS_SECONDS = 30;
 
-const BLOCKED_PREFIXES = ['/app/sos', '/admin', '/login', '/signup'];
+// Block where a full-screen popup would be disruptive or redundant.
+const BLOCKED_PREFIXES = ['/app/sos', '/app/help', '/admin', '/login', '/signup'];
 /** Paths where the popup is allowed but nothing else is (i.e. landing). */
 const QUIET_EXACT_PATHS = ['/'];
 
@@ -161,6 +162,7 @@ export const IncomingSosOverlay = () => {
   const accept = async () => {
     if (!activeReq || !user || !currentLocation || accepting) return;
     setAccepting(true);
+    let acceptedOk = false;
     try {
       let hp = null as Awaited<ReturnType<typeof getUserProfile>>;
       try {
@@ -182,17 +184,30 @@ export const IncomingSosOverlay = () => {
         helperBrief,
         helperLocation: { lat: currentLocation.lat, lon: currentLocation.lon },
       });
+      acceptedOk = true;
     } catch (e) {
       const msg = String((e as { message?: string })?.message ?? e ?? '');
       if (msg.includes('HELPER_SLOT_FULL')) {
-        console.warn('[IncomingSosOverlay] slot full');
+        // Someone else already accepted. Suppress this request for this session
+        // so the popup doesn't loop infinitely while Firestore catches up.
+        dismiss('user');
+        // Short snooze to avoid rapid re-picks if multiple requests exist.
+        localStorage.setItem(SNOOZE_UNTIL_KEY, String(Date.now() + 30_000));
+        return;
       } else {
         console.warn('[IncomingSosOverlay] accept failed', e);
+        // Avoid infinite reopen loops on transient errors.
+        dismiss('user');
+        localStorage.setItem(SNOOZE_UNTIL_KEY, String(Date.now() + 30_000));
+        return;
       }
     } finally {
       setAccepting(false);
-      setActiveReq(null);
-      nav('/app/help');
+      if (acceptedOk) {
+        // Mark as handled so it won't pop again on the next snapshot tick.
+        dismiss('user');
+        nav('/app/help');
+      }
     }
   };
 

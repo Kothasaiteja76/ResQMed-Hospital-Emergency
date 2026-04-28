@@ -54,7 +54,7 @@ function timeAgo(ts: number) {
 
 export const HelpPage = () => {
   const nav = useNavigate();
-  const { user } = useAuth();
+  const { user, ready } = useAuth();
   const [tab, setTab] = useState<Tab>('need-help');
   const [sort, setSort] = useState<Sort>('nearest');
   const [feed, setFeed] = useState<SosRequestDoc[]>([]);
@@ -67,8 +67,9 @@ export const HelpPage = () => {
 
   // ── Redirect to login if user is not authenticated ──
   useEffect(() => {
-    if (!user) nav('/login?redirect=/app/help');
-  }, [user, nav]);
+    if (!ready) return;
+    if (!user) nav('/login?redirect=/app/help', { replace: true });
+  }, [ready, user, nav]);
 
   // Use the authenticated user's ID
   const helperUid = user?.uid ?? '';

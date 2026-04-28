@@ -35,7 +35,7 @@
 
 | Type | Link |
 | --- | --- |
-| Full product walkthrough | [Add video link](https://example.com/prototype-video) |
+| Full product walkthrough | [Add video link](https://drive.google.com/drive/folders/1QgGScPH1PEJyWkn8pM74n7fJYiNJWjdL?usp=sharing) |
 
 ---
 
